@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/Xerrion/RaidLogAuto/compare/1.1.0...1.1.1) (2026-02-21)
+
+
+### Bug Fixes
+
+* restore tag configuration in release-please config ([#9](https://github.com/Xerrion/RaidLogAuto/issues/9)) ([d22cff8](https://github.com/Xerrion/RaidLogAuto/commit/d22cff8648bbb2cb411848bf3321a2eadf93aacc))
+
 ## [1.1.0](https://github.com/Xerrion/RaidLogAuto/compare/v1.0.2...1.1.0) (2026-02-21)
 
 
