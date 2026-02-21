@@ -1,52 +1,46 @@
--------------------------------------------------------------------------------
--- RaidLogAuto
+ -------------------------------------------------------------------------------
+-- RaidLogAuto_Main
 -- Automatically enables combat logging when entering a raid instance
 -- and disables it when leaving.
+--
+-- This version is for:
+-- - World of Warcraft Retail (LoggingCombat API, Mythic+ support)
+-- - Mists of Pandaria Classic (LoggingCombat API)
+--
+-- Note: This addon does NOT work on Classic Era (no LoggingCombat API)
 -------------------------------------------------------------------------------
-
--- DEPRECATION NOTICE
--- This file is deprecated and is no longer loaded by the addon.
--- Please use the version-specific file instead:
---   - RaidLogAuto_Classic.lua for Classic, Hardcore, and Era servers
---   - RaidLogAuto_Retail.lua for Retail (Dragonflight, The War Within, etc.)
--- The TOC file now loads the appropriate version-specific file based on the game version.
 
 local ADDON_NAME, ns = ...
 
--- Saved variables (initialized on ADDON_LOADED)
 RaidLogAutoDB = RaidLogAutoDB or {}
 
--- Default settings
 local defaults = {
-    enabled = true,           -- Master toggle
-    raidOnly = true,          -- Only log in raid instances
-    mythicPlus = false,       -- Also log in Mythic+ dungeons (Retail only)
-    printMessages = true,     -- Print status messages to chat
+    enabled = true,
+    raidOnly = true,
+    mythicPlus = false,
+    printMessages = true,
 }
 
--- Local references for performance
 local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local GetInstanceInfo = GetInstanceInfo
 local LoggingCombat = LoggingCombat
 local print = print
 
--- Localized strings (use Blizzard's globals when available)
 local L = {
     ENABLED = COMBATLOGENABLED or "Combat logging enabled.",
     DISABLED = COMBATLOGDISABLED or "Combat logging disabled.",
     ADDON_LOADED = "RaidLogAuto loaded. Type /rla for options.",
 }
 
--- Color codes
 local COLOR_YELLOW = "|cffffff00"
 local COLOR_GREEN = "|cff00ff00"
 local COLOR_RED = "|cffff0000"
 local COLOR_RESET = "|r"
 
--------------------------------------------------------------------------------
+ -------------------------------------------------------------------------------
 -- Helper Functions
--------------------------------------------------------------------------------
+ -------------------------------------------------------------------------------
 
 local function Print(msg)
     if RaidLogAutoDB.printMessages then
@@ -61,18 +55,14 @@ local function ShouldEnableLogging()
 
     local inInstance, instanceType = IsInInstance()
 
-    -- Not in any instance
     if not inInstance then
         return false
     end
 
-    -- Raid instance check
     if instanceType == "raid" then
         return true
     end
 
-    -- Mythic+ dungeon check (Retail only)
-    -- C_ChallengeMode exists only in Retail
     if RaidLogAutoDB.mythicPlus and instanceType == "party" then
         if C_ChallengeMode and C_ChallengeMode.GetActiveChallengeMapID then
             local mapID = C_ChallengeMode.GetActiveChallengeMapID()
@@ -98,15 +88,14 @@ local function UpdateLogging()
     end
 end
 
--------------------------------------------------------------------------------
+ -------------------------------------------------------------------------------
 -- Event Handler
--------------------------------------------------------------------------------
+ -------------------------------------------------------------------------------
 
 local frame = CreateFrame("Frame")
 
 local function OnEvent(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == ADDON_NAME then
-        -- Initialize saved variables with defaults
         for key, value in pairs(defaults) do
             if RaidLogAutoDB[key] == nil then
                 RaidLogAutoDB[key] = value
@@ -118,14 +107,12 @@ local function OnEvent(self, event, arg1)
         self:RegisterEvent("PLAYER_ENTERING_WORLD")
         self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 
-        -- Retail-specific: Challenge mode events
         if C_ChallengeMode then
             self:RegisterEvent("CHALLENGE_MODE_START")
             self:RegisterEvent("CHALLENGE_MODE_COMPLETED")
         end
 
     elseif event == "PLAYER_ENTERING_WORLD" then
-        -- Slight delay to ensure instance info is available
         C_Timer.After(1, UpdateLogging)
 
     elseif event == "ZONE_CHANGED_NEW_AREA" then
@@ -137,7 +124,6 @@ local function OnEvent(self, event, arg1)
         end
 
     elseif event == "CHALLENGE_MODE_COMPLETED" then
-        -- Logging will be disabled on zone change, but check immediately
         UpdateLogging()
     end
 end
@@ -145,9 +131,9 @@ end
 frame:SetScript("OnEvent", OnEvent)
 frame:RegisterEvent("ADDON_LOADED")
 
--------------------------------------------------------------------------------
+ -------------------------------------------------------------------------------
 -- Slash Commands
--------------------------------------------------------------------------------
+ -------------------------------------------------------------------------------
 
 SLASH_RAIDLOGAUTO1 = "/raidlogauto"
 SLASH_RAIDLOGAUTO2 = "/rla"
@@ -206,7 +192,6 @@ SlashCmdList["RAIDLOGAUTO"] = function(msg)
 
     elseif cmd == "silent" or cmd == "quiet" then
         RaidLogAutoDB.printMessages = not RaidLogAutoDB.printMessages
-        -- Always print this one so user knows it worked
         print(COLOR_YELLOW .. "[RaidLogAuto]|r Messages " .. (RaidLogAutoDB.printMessages and "enabled" or "disabled"))
 
     elseif cmd == "help" or cmd == "?" then

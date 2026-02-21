@@ -1,52 +1,41 @@
 -------------------------------------------------------------------------------
--- RaidLogAuto
+-- RaidLogAuto_Classic
 -- Automatically enables combat logging when entering a raid instance
 -- and disables it when leaving.
+--
+-- THIS VERSION IS FOR CLASSIC ERA AND WRATH CLASSIC
+-- Note: LoggingCombat() API does not exist in Classic/Wrath
 -------------------------------------------------------------------------------
-
--- DEPRECATION NOTICE
--- This file is deprecated and is no longer loaded by the addon.
--- Please use the version-specific file instead:
---   - RaidLogAuto_Classic.lua for Classic, Hardcore, and Era servers
---   - RaidLogAuto_Retail.lua for Retail (Dragonflight, The War Within, etc.)
--- The TOC file now loads the appropriate version-specific file based on the game version.
 
 local ADDON_NAME, ns = ...
 
--- Saved variables (initialized on ADDON_LOADED)
 RaidLogAutoDB = RaidLogAutoDB or {}
 
--- Default settings
 local defaults = {
-    enabled = true,           -- Master toggle
-    raidOnly = true,          -- Only log in raid instances
-    mythicPlus = false,       -- Also log in Mythic+ dungeons (Retail only)
-    printMessages = true,     -- Print status messages to chat
+    enabled = true,
+    raidOnly = true,
+    printMessages = true,
 }
 
--- Local references for performance
 local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local GetInstanceInfo = GetInstanceInfo
-local LoggingCombat = LoggingCombat
 local print = print
 
--- Localized strings (use Blizzard's globals when available)
 local L = {
-    ENABLED = COMBATLOGENABLED or "Combat logging enabled.",
-    DISABLED = COMBATLOGDISABLED or "Combat logging disabled.",
     ADDON_LOADED = "RaidLogAuto loaded. Type /rla for options.",
+    NOT_AVAILABLE = "Combat logging is not available in Classic/Wrath.",
+    UNSUPPORTED = "LoggingCombat API not supported in Classic.",
 }
 
--- Color codes
 local COLOR_YELLOW = "|cffffff00"
 local COLOR_GREEN = "|cff00ff00"
 local COLOR_RED = "|cffff0000"
 local COLOR_RESET = "|r"
 
--------------------------------------------------------------------------------
--- Helper Functions
--------------------------------------------------------------------------------
+local function LoggingCombatWrapper(...)
+    return false
+end
 
 local function Print(msg)
     if RaidLogAutoDB.printMessages then
@@ -61,25 +50,12 @@ local function ShouldEnableLogging()
 
     local inInstance, instanceType = IsInInstance()
 
-    -- Not in any instance
     if not inInstance then
         return false
     end
 
-    -- Raid instance check
     if instanceType == "raid" then
         return true
-    end
-
-    -- Mythic+ dungeon check (Retail only)
-    -- C_ChallengeMode exists only in Retail
-    if RaidLogAutoDB.mythicPlus and instanceType == "party" then
-        if C_ChallengeMode and C_ChallengeMode.GetActiveChallengeMapID then
-            local mapID = C_ChallengeMode.GetActiveChallengeMapID()
-            if mapID then
-                return true
-            end
-        end
     end
 
     return false
@@ -87,26 +63,20 @@ end
 
 local function UpdateLogging()
     local shouldLog = ShouldEnableLogging()
-    local currentlyLogging = LoggingCombat()
+    local currentlyLogging = LoggingCombatWrapper()
 
     if shouldLog and not currentlyLogging then
-        LoggingCombat(true)
-        Print(COLOR_GREEN .. L.ENABLED .. COLOR_RESET)
+        LoggingCombatWrapper(true)
+        Print(COLOR_GREEN .. L.NOT_AVAILABLE .. COLOR_RESET)
     elseif not shouldLog and currentlyLogging then
-        LoggingCombat(false)
-        Print(COLOR_RED .. L.DISABLED .. COLOR_RESET)
+        LoggingCombatWrapper(false)
     end
 end
-
--------------------------------------------------------------------------------
--- Event Handler
--------------------------------------------------------------------------------
 
 local frame = CreateFrame("Frame")
 
 local function OnEvent(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == ADDON_NAME then
-        -- Initialize saved variables with defaults
         for key, value in pairs(defaults) do
             if RaidLogAutoDB[key] == nil then
                 RaidLogAutoDB[key] = value
@@ -118,36 +88,16 @@ local function OnEvent(self, event, arg1)
         self:RegisterEvent("PLAYER_ENTERING_WORLD")
         self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 
-        -- Retail-specific: Challenge mode events
-        if C_ChallengeMode then
-            self:RegisterEvent("CHALLENGE_MODE_START")
-            self:RegisterEvent("CHALLENGE_MODE_COMPLETED")
-        end
-
     elseif event == "PLAYER_ENTERING_WORLD" then
-        -- Slight delay to ensure instance info is available
         C_Timer.After(1, UpdateLogging)
 
     elseif event == "ZONE_CHANGED_NEW_AREA" then
-        UpdateLogging()
-
-    elseif event == "CHALLENGE_MODE_START" then
-        if RaidLogAutoDB.mythicPlus then
-            UpdateLogging()
-        end
-
-    elseif event == "CHALLENGE_MODE_COMPLETED" then
-        -- Logging will be disabled on zone change, but check immediately
         UpdateLogging()
     end
 end
 
 frame:SetScript("OnEvent", OnEvent)
 frame:RegisterEvent("ADDON_LOADED")
-
--------------------------------------------------------------------------------
--- Slash Commands
--------------------------------------------------------------------------------
 
 SLASH_RAIDLOGAUTO1 = "/raidlogauto"
 SLASH_RAIDLOGAUTO2 = "/rla"
@@ -156,11 +106,9 @@ local function PrintStatus()
     print(COLOR_YELLOW .. "--- RaidLogAuto Status ---" .. COLOR_RESET)
     print("  Enabled: " .. (RaidLogAutoDB.enabled and COLOR_GREEN .. "Yes" or COLOR_RED .. "No") .. COLOR_RESET)
     print("  Raid Only: " .. (RaidLogAutoDB.raidOnly and "Yes" or "No"))
-    if C_ChallengeMode then
-        print("  Mythic+: " .. (RaidLogAutoDB.mythicPlus and "Yes" or "No"))
-    end
     print("  Print Messages: " .. (RaidLogAutoDB.printMessages and "Yes" or "No"))
-    print("  Currently Logging: " .. (LoggingCombat() and COLOR_GREEN .. "Yes" or COLOR_RED .. "No") .. COLOR_RESET)
+    print("  Auto Logging: " .. COLOR_RED .. "N/A (Classic)" .. COLOR_RESET)
+    print("  " .. COLOR_YELLOW .. L.UNSUPPORTED .. COLOR_RESET)
 end
 
 local function PrintHelp()
@@ -169,7 +117,6 @@ local function PrintHelp()
     print("  /rla on - Enable addon")
     print("  /rla off - Disable addon")
     print("  /rla toggle - Toggle addon on/off")
-    print("  /rla mythic - Toggle Mythic+ logging (Retail only)")
     print("  /rla silent - Toggle chat messages")
     print("  /rla help - Show this help")
 end
@@ -195,18 +142,8 @@ SlashCmdList["RAIDLOGAUTO"] = function(msg)
         Print("Addon " .. (RaidLogAutoDB.enabled and COLOR_GREEN .. "enabled" or COLOR_RED .. "disabled") .. COLOR_RESET)
         UpdateLogging()
 
-    elseif cmd == "mythic" or cmd == "m+" then
-        if C_ChallengeMode then
-            RaidLogAutoDB.mythicPlus = not RaidLogAutoDB.mythicPlus
-            Print("Mythic+ logging " .. (RaidLogAutoDB.mythicPlus and COLOR_GREEN .. "enabled" or COLOR_RED .. "disabled") .. COLOR_RESET)
-            UpdateLogging()
-        else
-            Print("Mythic+ is only available in Retail WoW.")
-        end
-
     elseif cmd == "silent" or cmd == "quiet" then
         RaidLogAutoDB.printMessages = not RaidLogAutoDB.printMessages
-        -- Always print this one so user knows it worked
         print(COLOR_YELLOW .. "[RaidLogAuto]|r Messages " .. (RaidLogAutoDB.printMessages and "enabled" or "disabled"))
 
     elseif cmd == "help" or cmd == "?" then
