@@ -13,3 +13,5 @@ ignore:
   - icon.png
   - release-please-config.json
   - .release-please-manifest.json
+  - .luacheckrc
+  - RaidLogAuto.lua
