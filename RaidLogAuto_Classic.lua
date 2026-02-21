@@ -7,7 +7,7 @@
 -- Note: LoggingCombat() API does not exist in Classic/Wrath
 -------------------------------------------------------------------------------
 
-local ADDON_NAME, ns = ...
+local ADDON_NAME, _ = ...
 
 RaidLogAutoDB = RaidLogAutoDB or {}
 
@@ -18,8 +18,6 @@ local defaults = {
 }
 
 local IsInInstance = IsInInstance
-local IsInRaid = IsInRaid
-local GetInstanceInfo = GetInstanceInfo
 local print = print
 
 local L = {
@@ -33,7 +31,7 @@ local COLOR_GREEN = "|cff00ff00"
 local COLOR_RED = "|cffff0000"
 local COLOR_RESET = "|r"
 
-local function LoggingCombatWrapper(...)
+local function LoggingCombatWrapper()
     return false
 end
 
