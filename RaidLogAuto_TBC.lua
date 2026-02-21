@@ -1,14 +1,11 @@
  -------------------------------------------------------------------------------
--- RaidLogAuto_Main
+-- RaidLogAuto_TBC
 -- Automatically enables combat logging when entering a raid instance
 -- and disables it when leaving.
 --
--- This version is for:
--- - World of Warcraft Retail (LoggingCombat API, Mythic+ support)
--- - Mists of Pandaria Classic (LoggingCombat API)
---
--- Note: This addon does NOT work on Classic Era (no LoggingCombat API)
--------------------------------------------------------------------------------
+-- This version is for: TBC Anniversary
+-- Supported features: Raid logging
+ -------------------------------------------------------------------------------
 
 local ADDON_NAME, _ = ...
 
@@ -17,7 +14,6 @@ RaidLogAutoDB = RaidLogAutoDB or {}
 local defaults = {
     enabled = true,
     raidOnly = true,
-    mythicPlus = false,
     printMessages = true,
 }
 
@@ -57,20 +53,7 @@ local function ShouldEnableLogging()
         return false
     end
 
-    if instanceType == "raid" then
-        return true
-    end
-
-    if RaidLogAutoDB.mythicPlus and instanceType == "party" then
-        if C_ChallengeMode and C_ChallengeMode.GetActiveChallengeMapID then
-            local mapID = C_ChallengeMode.GetActiveChallengeMapID()
-            if mapID then
-                return true
-            end
-        end
-    end
-
-    return false
+    return instanceType == "raid"
 end
 
 local function UpdateLogging()
@@ -105,23 +88,10 @@ local function OnEvent(self, event, arg1)
         self:RegisterEvent("PLAYER_ENTERING_WORLD")
         self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 
-        if C_ChallengeMode then
-            self:RegisterEvent("CHALLENGE_MODE_START")
-            self:RegisterEvent("CHALLENGE_MODE_COMPLETED")
-        end
-
     elseif event == "PLAYER_ENTERING_WORLD" then
         C_Timer.After(1, UpdateLogging)
 
     elseif event == "ZONE_CHANGED_NEW_AREA" then
-        UpdateLogging()
-
-    elseif event == "CHALLENGE_MODE_START" then
-        if RaidLogAutoDB.mythicPlus then
-            UpdateLogging()
-        end
-
-    elseif event == "CHALLENGE_MODE_COMPLETED" then
         UpdateLogging()
     end
 end
@@ -140,9 +110,6 @@ local function PrintStatus()
     print(COLOR_YELLOW .. "--- RaidLogAuto Status ---" .. COLOR_RESET)
     print("  Enabled: " .. (RaidLogAutoDB.enabled and COLOR_GREEN .. "Yes" or COLOR_RED .. "No") .. COLOR_RESET)
     print("  Raid Only: " .. (RaidLogAutoDB.raidOnly and "Yes" or "No"))
-    if C_ChallengeMode then
-        print("  Mythic+: " .. (RaidLogAutoDB.mythicPlus and "Yes" or "No"))
-    end
     print("  Print Messages: " .. (RaidLogAutoDB.printMessages and "Yes" or "No"))
     print("  Currently Logging: " .. (LoggingCombat() and COLOR_GREEN .. "Yes" or COLOR_RED .. "No") .. COLOR_RESET)
 end
@@ -153,7 +120,6 @@ local function PrintHelp()
     print("  /rla on - Enable addon")
     print("  /rla off - Disable addon")
     print("  /rla toggle - Toggle addon on/off")
-    print("  /rla mythic - Toggle Mythic+ logging (Retail only)")
     print("  /rla silent - Toggle chat messages")
     print("  /rla help - Show this help")
 end
@@ -178,15 +144,6 @@ SlashCmdList["RAIDLOGAUTO"] = function(msg)
         RaidLogAutoDB.enabled = not RaidLogAutoDB.enabled
         Print("Addon " .. (RaidLogAutoDB.enabled and COLOR_GREEN .. "enabled" or COLOR_RED .. "disabled") .. COLOR_RESET)
         UpdateLogging()
-
-    elseif cmd == "mythic" or cmd == "m+" then
-        if C_ChallengeMode then
-            RaidLogAutoDB.mythicPlus = not RaidLogAutoDB.mythicPlus
-            Print("Mythic+ logging " .. (RaidLogAutoDB.mythicPlus and COLOR_GREEN .. "enabled" or COLOR_RED .. "disabled") .. COLOR_RESET)
-            UpdateLogging()
-        else
-            Print("Mythic+ is only available in Retail WoW.")
-        end
 
     elseif cmd == "silent" or cmd == "quiet" then
         RaidLogAutoDB.printMessages = not RaidLogAutoDB.printMessages

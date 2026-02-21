@@ -1,9 +1,9 @@
  -------------------------------------------------------------------------------
--- RaidLogAuto_Classic
+-- RaidLogAuto_Cata
 -- Automatically enables combat logging when entering a raid instance
 -- and disables it when leaving.
 --
--- This version is for: Classic Era
+-- This version is for: Cataclysm Classic
 -- Supported features: Raid logging
  -------------------------------------------------------------------------------
 
