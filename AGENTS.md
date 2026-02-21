@@ -36,8 +36,7 @@ RaidLogAuto/
 ├── .pkgmeta                     # Packaging metadata
 ├── .github/workflows/
 │   ├── lint.yml                # Luacheck CI on PRs and master
-│   ├── release.yml             # Auto-packaging on tag push
-│   └── release-please.yml     # Automated versioning and changelog
+│   └── release.yml             # Release-please + auto-packaging
 ```
 
 ### Version-Specific Files
