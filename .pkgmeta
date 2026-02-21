@@ -11,3 +11,5 @@ ignore:
   - "*.md"
   - "*.ps1"
   - icon.png
+  - release-please-config.json
+  - .release-please-manifest.json
