@@ -10,7 +10,7 @@
 -- Note: This addon does NOT work on Classic Era (no LoggingCombat API)
 -------------------------------------------------------------------------------
 
-local ADDON_NAME, ns = ...
+local ADDON_NAME, _ = ...
 
 RaidLogAutoDB = RaidLogAutoDB or {}
 
@@ -22,8 +22,6 @@ local defaults = {
 }
 
 local IsInInstance = IsInInstance
-local IsInRaid = IsInRaid
-local GetInstanceInfo = GetInstanceInfo
 local LoggingCombat = LoggingCombat
 local print = print
 
