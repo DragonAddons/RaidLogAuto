@@ -1,6 +1,6 @@
 # RaidLogAuto - Agent Guidelines
 
-This is a World of Warcraft addon that automatically enables combat logging when entering raid instances and disables it when leaving. The addon supports multiple WoW versions: Retail, MoP Classic, Cataclysm Classic, TBC Anniversary, Classic Era, and Wrath Classic.
+This is a World of Warcraft addon that automatically enables combat logging when entering raid instances and disables it when leaving. The addon supports multiple WoW versions: Retail, MoP Classic, TBC Anniversary, Cataclysm Classic, and Classic Era.
 
 ---
 
@@ -26,22 +26,29 @@ Since this is a WoW addon, there are no automated unit tests. Testing is done ma
 RaidLogAuto/
 ├── AGENTS.md                    # This file
 ├── RaidLogAuto.toc              # TOC file - defines which Lua to load per version
-├── RaidLogAuto_Main.lua         # Retail + MoP Classic (LoggingCombat + Mythic+)
-├── RaidLogAuto_Legacy.lua       # TBC + Cataclysm Classic (LoggingCombat only)
-├── RaidLogAuto_Classic.lua      # Classic Era + Wrath (no LoggingCombat)
+├── RaidLogAuto_Retail.lua       # Retail (Raids + Mythic+)
+├── RaidLogAuto_Mists.lua        # MoP Classic (Raids + Mythic+)
+├── RaidLogAuto_TBC.lua          # TBC Anniversary (Raids)
+├── RaidLogAuto_Cata.lua         # Cataclysm Classic (Raids)
+├── RaidLogAuto_Classic.lua      # Classic Era (Raids)
 ├── RaidLogAuto.lua              # Deprecated - DO NOT EDIT
+├── .luacheckrc                  # Luacheck configuration
 ├── .pkgmeta                     # Packaging metadata
 ├── .github/workflows/
-│   └── release.yml             # Auto-packaging on tag push
+│   ├── lint.yml                # Luacheck CI on PRs and master
+│   ├── release.yml             # Auto-packaging on tag push
+│   └── release-please.yml     # Automated versioning and changelog
 ```
 
 ### Version-Specific Files
 
-| File | Interfaces | Game Versions |
-|------|------------|---------------|
-| RaidLogAuto_Main.lua | Interface, Interface-Mists | Retail, MoP Classic |
-| RaidLogAuto_Legacy.lua | Interface-BCC, Interface-Cata | TBC Anniversary, Cataclysm Classic |
-| RaidLogAuto_Classic.lua | Interface-Classic | Classic Era, Wrath Classic |
+| File | Interface | Game Version | Features |
+|------|-----------|--------------|----------|
+| RaidLogAuto_Retail.lua | Interface | Retail | Raids + Mythic+ |
+| RaidLogAuto_Mists.lua | Interface-Mists | MoP Classic | Raids + Mythic+ |
+| RaidLogAuto_TBC.lua | Interface-BCC | TBC Anniversary | Raids |
+| RaidLogAuto_Cata.lua | Interface-Cata | Cataclysm Classic | Raids |
+| RaidLogAuto_Classic.lua | Interface-Classic | Classic Era | Raids |
 
 ---
 
@@ -69,7 +76,7 @@ RaidLogAuto/
  -- Supported versions: Retail, MoP Classic (or relevant versions)
  -------------------------------------------------------------------------------
 
-local ADDON_NAME, ns = ...
+local ADDON_NAME, _ = ...
 
 -- Constants (uppercase)
 local CONSTANT_NAME = "value"
@@ -89,7 +96,7 @@ local COLOR_RESET = "|r"
 
 | Type | Convention | Example |
 |------|------------|---------|
-| Files | PascalCase | RaidLogAuto_Main.lua |
+| Files | PascalCase | RaidLogAuto_Retail.lua |
 | Global variables | PascalCase | RaidLogAutoDB |
 | Local variables | camelCase | local currentState |
 | Functions | PascalCase | local function UpdateLogging() |
@@ -166,7 +173,7 @@ end
 local defaults = {
     enabled = true,
     raidOnly = true,
-    mythicPlus = false,      -- Main only
+    mythicPlus = false,      -- Retail/Mists only
     printMessages = true,
 }
 
@@ -194,8 +201,8 @@ end
 
 ## Common Pitfalls to Avoid
 
-1. **LoggingCombat API** - Does NOT exist in Classic Era/Wrath Classic - use separate files
-2. **C_ChallengeMode API** - Only exists in MoP+ (Retail/MoP Classic) - use separate files
+1. **LoggingCombat API** - Available in all versions (modern client)
+2. **C_ChallengeMode API** - API exists in all versions, but M+ content only in Retail/MoP Classic
 3. **Deprecated globals** - `COMBATLOGENABLED`/`COMBATLOGDISABLED` removed in Cataclysm
 4. **Race conditions** - Use C_Timer for delayed operations after PLAYER_ENTERING_WORLD
 5. **Timer leaks** - Cancel pending timers before setting new ones
@@ -209,7 +216,7 @@ end
 |----------|--------------|---------|
 | `IsInInstance()` | All versions | Check if player is in instance |
 | `IsInRaid()` | All versions | Check if player is in raid |
-| `LoggingCombat([bool])` | TBC+ | Get/set combat logging state |
-| `C_ChallengeMode.GetActiveChallengeMapID()` | MoP+ | Get active M+ map ID |
+| `LoggingCombat([bool])` | All versions | Get/set combat logging state |
+| `C_ChallengeMode.GetActiveChallengeMapID()` | All versions (content in Retail/MoP only) | Get active M+ map ID |
 | `C_Timer.After(seconds, func)` | All versions | Delayed function execution |
 | `CreateFrame("Frame")` | All versions | Create event frame |
