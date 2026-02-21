@@ -1,8 +1,17 @@
 ## Interface: 110207, 120001, 120000
-## Interface-Classic: 11508, 11507
-## Interface-BCC: 20505
-## Interface-Cata: 40402
+RaidLogAuto_Main.lua
+
 ## Interface-Mists: 50502, 50503
+RaidLogAuto_Main.lua
+
+## Interface-Cata: 40402
+RaidLogAuto_Legacy.lua
+
+## Interface-BCC: 20505
+RaidLogAuto_Legacy.lua
+
+## Interface-Classic: 11508, 11507
+RaidLogAuto_Classic.lua
 
 ## Title: RaidLogAuto
 ## Notes: Automatically enables combat logging when entering a raid and disables it when leaving.
@@ -10,7 +19,7 @@
 ## Version: @project-version@
 ## IconTexture: Interface\Icons\INV_Misc_Note_01
 
-## X-Category: Combat
+## X-Category: Combat, Raid
 ## X-Website: https://github.com/Xerrion/RaidLogAuto
 ## X-License: MIT
 
@@ -18,5 +27,3 @@
 ## X-Wago-ID: rN4kWyGD
 
 ## SavedVariables: RaidLogAutoDB
-
-RaidLogAuto.lua
