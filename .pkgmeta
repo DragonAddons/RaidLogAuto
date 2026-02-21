@@ -4,7 +4,6 @@ enable-toc-creation: yes
 
 ignore:
   - README.md
-  - LICENSE
   - .github
   - .gitignore
   - .release
