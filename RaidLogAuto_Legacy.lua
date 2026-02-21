@@ -10,7 +10,7 @@
 -- Note: Uses the real LoggingCombat() API available in these versions
 -------------------------------------------------------------------------------
 
-local ADDON_NAME, ns = ...
+local ADDON_NAME, _ = ...
 
 RaidLogAutoDB = RaidLogAutoDB or {}
 
@@ -21,8 +21,6 @@ local defaults = {
 }
 
 local IsInInstance = IsInInstance
-local IsInRaid = IsInRaid
-local GetInstanceInfo = GetInstanceInfo
 local LoggingCombat = LoggingCombat
 local print = print
 
@@ -100,11 +98,11 @@ local function OnEvent(self, event, arg1)
     elseif event == "PLAYER_ENTERING_WORLD" then
         local delayFrame = CreateFrame("Frame")
         local elapsed = 0
-        delayFrame:SetScript("OnUpdate", function(self, delta)
+        delayFrame:SetScript("OnUpdate", function(_, delta)
             elapsed = elapsed + delta
             if elapsed >= 1 then
                 UpdateLogging()
-                self:Hide()
+                delayFrame:Hide()
             end
         end)
         delayFrame:Show()
