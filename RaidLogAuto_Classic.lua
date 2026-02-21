@@ -1,11 +1,11 @@
--------------------------------------------------------------------------------
+ -------------------------------------------------------------------------------
 -- RaidLogAuto_Classic
 -- Automatically enables combat logging when entering a raid instance
 -- and disables it when leaving.
 --
--- THIS VERSION IS FOR CLASSIC ERA AND WRATH CLASSIC
--- Note: LoggingCombat() API does not exist in Classic/Wrath
--------------------------------------------------------------------------------
+-- This version is for: Classic Era
+-- Supported features: Raid logging
+ -------------------------------------------------------------------------------
 
 local ADDON_NAME, _ = ...
 
@@ -18,12 +18,13 @@ local defaults = {
 }
 
 local IsInInstance = IsInInstance
+local LoggingCombat = LoggingCombat
 local print = print
 
 local L = {
+    ENABLED = COMBATLOGENABLED or "Combat logging enabled.",
+    DISABLED = COMBATLOGDISABLED or "Combat logging disabled.",
     ADDON_LOADED = "RaidLogAuto loaded. Type /rla for options.",
-    NOT_AVAILABLE = "Combat logging is not available in Classic/Wrath.",
-    UNSUPPORTED = "LoggingCombat API not supported in Classic.",
 }
 
 local COLOR_YELLOW = "|cffffff00"
@@ -31,9 +32,9 @@ local COLOR_GREEN = "|cff00ff00"
 local COLOR_RED = "|cffff0000"
 local COLOR_RESET = "|r"
 
-local function LoggingCombatWrapper()
-    return false
-end
+ -------------------------------------------------------------------------------
+-- Helper Functions
+ -------------------------------------------------------------------------------
 
 local function Print(msg)
     if RaidLogAutoDB.printMessages then
@@ -52,24 +53,25 @@ local function ShouldEnableLogging()
         return false
     end
 
-    if instanceType == "raid" then
-        return true
-    end
-
-    return false
+    return instanceType == "raid"
 end
 
 local function UpdateLogging()
     local shouldLog = ShouldEnableLogging()
-    local currentlyLogging = LoggingCombatWrapper()
+    local currentlyLogging = LoggingCombat()
 
     if shouldLog and not currentlyLogging then
-        LoggingCombatWrapper(true)
-        Print(COLOR_GREEN .. L.NOT_AVAILABLE .. COLOR_RESET)
+        LoggingCombat(true)
+        Print(COLOR_GREEN .. L.ENABLED .. COLOR_RESET)
     elseif not shouldLog and currentlyLogging then
-        LoggingCombatWrapper(false)
+        LoggingCombat(false)
+        Print(COLOR_RED .. L.DISABLED .. COLOR_RESET)
     end
 end
+
+ -------------------------------------------------------------------------------
+-- Event Handler
+ -------------------------------------------------------------------------------
 
 local frame = CreateFrame("Frame")
 
@@ -97,6 +99,10 @@ end
 frame:SetScript("OnEvent", OnEvent)
 frame:RegisterEvent("ADDON_LOADED")
 
+ -------------------------------------------------------------------------------
+-- Slash Commands
+ -------------------------------------------------------------------------------
+
 SLASH_RAIDLOGAUTO1 = "/raidlogauto"
 SLASH_RAIDLOGAUTO2 = "/rla"
 
@@ -105,8 +111,7 @@ local function PrintStatus()
     print("  Enabled: " .. (RaidLogAutoDB.enabled and COLOR_GREEN .. "Yes" or COLOR_RED .. "No") .. COLOR_RESET)
     print("  Raid Only: " .. (RaidLogAutoDB.raidOnly and "Yes" or "No"))
     print("  Print Messages: " .. (RaidLogAutoDB.printMessages and "Yes" or "No"))
-    print("  Auto Logging: " .. COLOR_RED .. "N/A (Classic)" .. COLOR_RESET)
-    print("  " .. COLOR_YELLOW .. L.UNSUPPORTED .. COLOR_RESET)
+    print("  Currently Logging: " .. (LoggingCombat() and COLOR_GREEN .. "Yes" or COLOR_RED .. "No") .. COLOR_RESET)
 end
 
 local function PrintHelp()
