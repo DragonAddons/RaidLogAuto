@@ -1,14 +1,14 @@
 ## Interface: 110207, 120001, 120000
-RaidLogAuto_Main.lua
+RaidLogAuto_Retail.lua
 
 ## Interface-Mists: 50502, 50503
-RaidLogAuto_Main.lua
+RaidLogAuto_Mists.lua
 
 ## Interface-Cata: 40402
-RaidLogAuto_Legacy.lua
+RaidLogAuto_Cata.lua
 
 ## Interface-BCC: 20505
-RaidLogAuto_Legacy.lua
+RaidLogAuto_TBC.lua
 
 ## Interface-Classic: 11508, 11507
 RaidLogAuto_Classic.lua
