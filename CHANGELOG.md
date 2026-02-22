@@ -1,18 +1,10 @@
-## [unreleased]
+## [1.1.2] - 2026-02-22
 
 ### ⚙️ Miscellaneous Tasks
 
-- Add workflow_dispatch trigger for manual packaging (#12)
-## [1.1.2] - 2026-02-21
-
-### 📚 Documentation
-
-- Update AGENTS.md for combined workflow
-
-### ⚙️ Miscellaneous Tasks
-
-- Combine release-please and packager into single workflow
 - Combine release-please and packager into single workflow (#11)
+- Add workflow_dispatch trigger for manual packaging (#12)
+- Update release workflows (#13)
 ## [1.1.1] - 2026-02-21
 
 ### 🐛 Bug Fixes
@@ -55,4 +47,3 @@
 - Add luacheck configuration
 - Remove redundant release-type from workflow
 - *(master)* Release 1.1.0 (#4)
-## [1.0.0] - 2026-02-08
