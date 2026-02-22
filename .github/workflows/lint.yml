@@ -1,16 +1,17 @@
-name: Luacheck
+name: Lint
 
 on:
-  pull_request:
-  push:
-    branches: [master]
+  pull_request_target:
+    branches:
+      - master
 
 jobs:
   luacheck:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Run luacheck
-        uses: lunarmodules/luacheck@v1.2.0
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: nebularg/actions-luacheck@v1
+        with:
+          args: --no-color
