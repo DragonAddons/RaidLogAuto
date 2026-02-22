@@ -1,30 +1,58 @@
-# Changelog
+## [unreleased]
 
-## [1.1.1](https://github.com/Xerrion/RaidLogAuto/compare/1.1.0...1.1.1) (2026-02-21)
+### ⚙️ Miscellaneous Tasks
 
+- Add workflow_dispatch trigger for manual packaging (#12)
+## [1.1.2] - 2026-02-21
 
-### Bug Fixes
+### 📚 Documentation
 
-* restore tag configuration in release-please config ([#9](https://github.com/Xerrion/RaidLogAuto/issues/9)) ([d22cff8](https://github.com/Xerrion/RaidLogAuto/commit/d22cff8648bbb2cb411848bf3321a2eadf93aacc))
+- Update AGENTS.md for combined workflow
 
-## [1.1.0](https://github.com/Xerrion/RaidLogAuto/compare/v1.0.2...1.1.0) (2026-02-21)
+### ⚙️ Miscellaneous Tasks
 
+- Combine release-please and packager into single workflow
+- Combine release-please and packager into single workflow (#11)
+## [1.1.1] - 2026-02-21
 
-### Features
+### 🐛 Bug Fixes
 
-* split addon into version-specific files for multi-version support ([39aaa8c](https://github.com/Xerrion/RaidLogAuto/commit/39aaa8ced0bdc8dce806c555f570534a0d5c39e2))
-* split addon into version-specific files for multi-version support ([601c482](https://github.com/Xerrion/RaidLogAuto/commit/601c48281f3db194bdd24d7aa07c9ab55203e32e))
+- Restore tag configuration in release-please config (#9)
 
+### 💼 Other
 
-### Bug Fixes
+- Simplify release-please tag configuration (#7)
 
-* remove unused variables in RaidLogAuto_Classic.lua ([b6cc09b](https://github.com/Xerrion/RaidLogAuto/commit/b6cc09b5eeae52b1a786cc1a7709e4032924766e))
-* remove unused variables in RaidLogAuto_Legacy.lua ([814454a](https://github.com/Xerrion/RaidLogAuto/commit/814454a362616fc8b1f303b72d0fe1b5d94b1c57))
-* remove unused variables in RaidLogAuto_Main.lua ([c252942](https://github.com/Xerrion/RaidLogAuto/commit/c252942f34338ce3936c250db3285462d51a802a))
+### ⚙️ Miscellaneous Tasks
 
-## 1.0.2 (2026-02-08)
+- Update release please info (#6)
+- Configure changelog sections for release-please (#8)
+- *(master)* Release 1.1.1 (#10)
+## [1.1.0] - 2026-02-21
 
-### Features
+### 🚀 Features
 
-* Add MoP Classic support
-* Exclude icon and generator script from release package
+- Split addon into version-specific files for multi-version support
+
+### 🐛 Bug Fixes
+
+- Remove unused variables in RaidLogAuto_Main.lua
+- Remove unused variables in RaidLogAuto_Legacy.lua
+- Remove unused variables in RaidLogAuto_Classic.lua
+
+### 🚜 Refactor
+
+- Split addon into version-specific files (#5)
+
+### 📚 Documentation
+
+- Modernize README with badges, emojis, and visual improvements
+
+### ⚙️ Miscellaneous Tasks
+
+- Add Release Please for automated versioning and changelog
+- Add luacheck linting workflow
+- Add luacheck configuration
+- Remove redundant release-type from workflow
+- *(master)* Release 1.1.0 (#4)
+## [1.0.0] - 2026-02-08
