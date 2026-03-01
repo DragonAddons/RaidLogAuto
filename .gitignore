@@ -1,16 +1,5 @@
-# Packager files
+.env
 .release/
 
-# Editor files
-*.swp
-*.swo
-*~
-.vscode/
-.idea/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Env files
-.env
+# Windows
+nul
