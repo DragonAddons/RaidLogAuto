@@ -1,3 +1,7 @@
+# DEPRECATED: This file is kept for reference during the migration to release-please.
+# It will be removed after the first successful release-please release.
+# See issue #19.
+
 # git-cliff ~ configuration file
 # https://git-cliff.org/docs/configuration
 
