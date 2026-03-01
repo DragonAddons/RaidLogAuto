@@ -1,3 +1,16 @@
+## [1.2.0] - 2026-03-01
+
+### 🚀 Features
+
+- *(RaidLogAuto)* Add ACL auto-enable and CombatLog.txt reminder (#18)
+
+### 📚 Documentation
+
+- Add issue templates and PR template (#17)
+
+### ⚙️ Miscellaneous Tasks
+
+- Fix release workflow (#15)
 ## [1.1.2] - 2026-02-22
 
 ### ⚙️ Miscellaneous Tasks
@@ -5,6 +18,7 @@
 - Combine release-please and packager into single workflow (#11)
 - Add workflow_dispatch trigger for manual packaging (#12)
 - Update release workflows (#13)
+- Release 1.1.2 (#14)
 ## [1.1.1] - 2026-02-21
 
 ### 🐛 Bug Fixes
