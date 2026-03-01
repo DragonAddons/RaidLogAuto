@@ -16,18 +16,22 @@ globals = {
     "SLASH_RAIDLOGAUTO1",
     "SLASH_RAIDLOGAUTO2",
     "SlashCmdList",
+    "StaticPopupDialogs",
 }
 
 -- WoW API globals (read-only)
 read_globals = {
+    "C_ChallengeMode",
+    "C_Timer",
+    "COMBATLOGDISABLED",
+    "COMBATLOGENABLED",
     "CreateFrame",
+    "GetCVar",
+    "GetInstanceInfo",
     "IsInInstance",
     "IsInRaid",
-    "GetInstanceInfo",
     "LoggingCombat",
-    "C_Timer",
-    "C_ChallengeMode",
-    "COMBATLOGENABLED",
-    "COMBATLOGDISABLED",
     "print",
+    "SetCVar",
+    "StaticPopup_Show",
 }
