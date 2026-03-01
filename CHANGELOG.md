@@ -11,6 +11,14 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Fix release workflow (#15)
+## [1.2.0](https://github.com/Xerrion/RaidLogAuto/compare/1.1.2...1.2.0) (2026-03-01)
+
+
+### Features
+
+* align repo setup with DragonToast ([#19](https://github.com/Xerrion/RaidLogAuto/issues/19), [#20](https://github.com/Xerrion/RaidLogAuto/issues/20), [#21](https://github.com/Xerrion/RaidLogAuto/issues/21), [#22](https://github.com/Xerrion/RaidLogAuto/issues/22)) ([#23](https://github.com/Xerrion/RaidLogAuto/issues/23)) ([56b932b](https://github.com/Xerrion/RaidLogAuto/commit/56b932b1503269033fc982a2d86e79b68672688a))
+* **RaidLogAuto:** add ACL auto-enable and CombatLog.txt reminder ([#18](https://github.com/Xerrion/RaidLogAuto/issues/18)) ([f4b79b1](https://github.com/Xerrion/RaidLogAuto/commit/f4b79b1674ae31fa76060b14b3f800eb7eca7386))
+
 ## [1.1.2] - 2026-02-22
 
 ### ⚙️ Miscellaneous Tasks
