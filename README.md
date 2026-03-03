@@ -20,7 +20,9 @@
 
 - 🔄 **Automatic Combat Logging** — Starts recording when you enter a raid, stops when you leave
 - ⚔️ **Mythic+ Support** — Optionally log Mythic+ dungeons (Retail & MoP Classic)
-- 🌍 **Multi-Version** — Works across Retail, MoP Classic, Cataclysm Classic, TBC Anniversary, Classic Era, and Wrath Classic
+- 🌍 **Multi-Version** — Works across Retail, MoP Classic, Cataclysm Classic, TBC Anniversary, and Classic Era
+- 📊 **Advanced Combat Logging** — Automatically enables Advanced Combat Logging for detailed parse data
+- 🔔 **Combat Log Reminder** — One-time popup reminder about deleting old CombatLog.txt files
 - 🪶 **Lightweight** — Minimal memory footprint, zero performance impact
 - 🔇 **Silent Mode** — Toggle chat notifications on or off
 - ⚡ **Zero Config** — Install and forget — it just works
@@ -50,12 +52,11 @@ RaidLogAuto listens for instance changes. When you zone into a raid (or a Mythic
 
 | Version | Lua File | Features |
 |:--------|:---------|:---------|
-| **Retail** | `RaidLogAuto_Main.lua` | Raid logging + Mythic+ |
-| **MoP Classic** | `RaidLogAuto_Main.lua` | Raid logging + Mythic+ |
-| **Cataclysm Classic** | `RaidLogAuto_Legacy.lua` | Raid logging |
-| **TBC Anniversary** | `RaidLogAuto_Legacy.lua` | Raid logging |
-| **Classic Era** | `RaidLogAuto_Classic.lua` | Raid logging (limited) |
-| **Wrath Classic** | `RaidLogAuto_Classic.lua` | Raid logging (limited) |
+| **Retail** | `RaidLogAuto_Retail.lua` | Raid logging + Mythic+ + Advanced Combat Logging |
+| **MoP Classic** | `RaidLogAuto_Mists.lua` | Raid logging + Mythic+ + Advanced Combat Logging |
+| **Cataclysm Classic** | `RaidLogAuto_Cata.lua` | Raid logging + Advanced Combat Logging |
+| **TBC Anniversary** | `RaidLogAuto_TBC.lua` | Raid logging + Advanced Combat Logging |
+| **Classic Era** | `RaidLogAuto_Classic.lua` | Raid logging + Advanced Combat Logging |
 
 ---
 
@@ -96,6 +97,7 @@ All commands use the `/rla` prefix (or the full `/raidlogauto`):
 | `/rla toggle` | Toggle on/off |
 | `/rla mythic` | Toggle Mythic+ logging *(Retail & MoP Classic only)* |
 | `/rla silent` | Toggle chat notifications |
+| `/rla acl` | Check and enable Advanced Combat Logging |
 | `/rla help` | Show help |
 
 ---
@@ -108,8 +110,10 @@ Settings are stored in the `RaidLogAutoDB` SavedVariable and persist per-charact
 | Variable | Default | Description |
 |:---------|:--------|:------------|
 | `enabled` | `true` | Master toggle — enable or disable the addon |
+| `raidOnly` | `true` | Only log in raid instances |
 | `mythicPlus` | `false` | Log Mythic+ dungeons *(Retail & MoP Classic only)* |
 | `printMessages` | `true` | Show status messages in chat |
+| `combatLogReminderDismissed` | `false` | Whether the one-time combat log reminder has been dismissed |
 
 All settings can be changed via the [slash commands](#%EF%B8%8F-commands) above.
 
