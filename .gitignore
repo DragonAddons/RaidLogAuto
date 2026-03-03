@@ -1,5 +1,6 @@
 .env
 .release/
+lua_install/
 
 # Windows
 nul

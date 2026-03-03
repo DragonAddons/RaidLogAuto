@@ -7,6 +7,8 @@
 -- Supported features: Raid logging
  -------------------------------------------------------------------------------
 
+if WOW_PROJECT_ID ~= WOW_PROJECT_CATACLYSM_CLASSIC then return end
+
 local ADDON_NAME, _ = ...
 
 RaidLogAutoDB = RaidLogAutoDB or {}
