@@ -11,6 +11,18 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Fix release workflow (#15)
+## [1.3.0](https://github.com/DragonAddons/RaidLogAuto/compare/1.2.0...1.3.0) (2026-03-03)
+
+
+### Features
+
+* align repo setup with DragonToast ([#19](https://github.com/DragonAddons/RaidLogAuto/issues/19), [#20](https://github.com/DragonAddons/RaidLogAuto/issues/20), [#21](https://github.com/DragonAddons/RaidLogAuto/issues/21), [#22](https://github.com/DragonAddons/RaidLogAuto/issues/22)) ([#23](https://github.com/DragonAddons/RaidLogAuto/issues/23)) ([56b932b](https://github.com/DragonAddons/RaidLogAuto/commit/56b932b1503269033fc982a2d86e79b68672688a))
+
+
+### Bug Fixes
+
+* add WOW_PROJECT_ID guards to version-specific Lua files ([#26](https://github.com/DragonAddons/RaidLogAuto/issues/26)) ([#29](https://github.com/DragonAddons/RaidLogAuto/issues/29)) ([4dbb629](https://github.com/DragonAddons/RaidLogAuto/commit/4dbb629b0ac0d2103dd800ac487dde378204b16f)), closes [#25](https://github.com/DragonAddons/RaidLogAuto/issues/25)
+
 ## [1.2.0](https://github.com/Xerrion/RaidLogAuto/compare/1.1.2...1.2.0) (2026-03-01)
 
 
