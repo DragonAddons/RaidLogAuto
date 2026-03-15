@@ -17,15 +17,8 @@
 ## X-Wago-ID: rN4kWyGD
 
 ## SavedVariables: RaidLogAutoDB
-#@version-vanilla@
-RaidLogAuto_Vanilla.lua
-#@end-version-vanilla@
-#@version-bcc@
-RaidLogAuto_BCC.lua
-#@end-version-bcc@
-#@version-mists@
-RaidLogAuto_Mists.lua
-#@end-version-mists@
-#@version-retail@
+
 RaidLogAuto_Retail.lua
-#@end-version-retail@
+RaidLogAuto_BCC.lua
+RaidLogAuto_Mists.lua
+RaidLogAuto_Vanilla.lua
