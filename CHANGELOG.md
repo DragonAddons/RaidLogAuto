@@ -11,6 +11,13 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Fix release workflow (#15)
+## [1.4.1](https://github.com/DragonAddons/RaidLogAuto/compare/1.4.0...1.4.1) (2026-03-15)
+
+
+### Bug Fixes
+
+* inline shared release workflows ([#32](https://github.com/DragonAddons/RaidLogAuto/issues/32)) ([d8e5bdd](https://github.com/DragonAddons/RaidLogAuto/commit/d8e5bdd9705221851c6e3f6bd429225b748eb097))
+
 ## [1.4.0](https://github.com/DragonAddons/RaidLogAuto/compare/1.3.0...1.4.0) (2026-03-13)
 
 
