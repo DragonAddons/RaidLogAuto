@@ -18,14 +18,14 @@
 
 ## SavedVariables: RaidLogAutoDB
 #@version-vanilla@
-RaidLogAuto_Classic.lua
-#@end-version-vanilla#
+RaidLogAuto_Vanilla.lua
+#@end-version-vanilla@
 #@version-bcc@
 RaidLogAuto_BCC.lua
 #@end-version-bcc@
 #@version-mists@
 RaidLogAuto_Mists.lua
-#@end-version-mists#
+#@end-version-mists@
 #@version-retail@
 RaidLogAuto_Retail.lua
-#@end-version-retail#
+#@end-version-retail@
