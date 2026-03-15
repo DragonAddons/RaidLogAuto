@@ -2,83 +2,13 @@ name: Release
 
 on:
   push:
-    tags: ["*"]
-  workflow_dispatch:
-    inputs:
-      tag_name:
-        description: "Tag to package (e.g. 1.4.3)"
-        required: true
-        type: string
+    branches: [master]
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   release:
-    name: Package and Upload
-    runs-on: ubuntu-latest
-    env:
-      CF_API_KEY: ${{ secrets.CF_API_KEY }}
-      WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
-      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Resolve tag
-        shell: bash
-        run: |
-          if [[ -n "${{ inputs.tag_name || '' }}" ]]; then
-            TAG="${{ inputs.tag_name }}"
-          else
-            TAG="${{ github.ref_name }}"
-          fi
-
-          echo "TAG_NAME=$TAG" >> "$GITHUB_ENV"
-
-      - name: Resolve workflow source ref
-        id: workflow-source
-        shell: bash
-        env:
-          WORKFLOW_REF: ${{ github.workflow_ref }}
-        run: |
-          WORKFLOW_SOURCE_REF="${WORKFLOW_REF##*@}"
-
-          if [[ -z "$WORKFLOW_SOURCE_REF" || "$WORKFLOW_SOURCE_REF" == "$WORKFLOW_REF" ]]; then
-            echo "Unable to parse workflow source ref from: $WORKFLOW_REF" >&2
-            exit 1
-          fi
-
-          echo "ref=$WORKFLOW_SOURCE_REF" >> "$GITHUB_OUTPUT"
-
-      - name: Checkout workflow source
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ steps.workflow-source.outputs.ref }}
-          fetch-depth: 1
-          path: .workflow-source
-
-      - name: Preserve changelog script
-        shell: bash
-        run: |
-          mkdir -p "$RUNNER_TEMP/release-scripts"
-          cp .workflow-source/scripts/generate_changelog.sh "$RUNNER_TEMP/release-scripts/generate_changelog.sh"
-
-      - name: Checkout tag
-        uses: actions/checkout@v6
-        with:
-          ref: refs/tags/${{ env.TAG_NAME }}
-          fetch-depth: 0
-
-      - name: Restore changelog script
-        shell: bash
-        run: |
-          mkdir -p scripts
-          cp "$RUNNER_TEMP/release-scripts/generate_changelog.sh" scripts/generate_changelog.sh
-          chmod +x scripts/generate_changelog.sh
-
-      - name: Generate changelog
-        shell: bash
-        run: bash scripts/generate_changelog.sh
-
-      - name: Package and upload
-        uses: BigWigsMods/packager@v2
-        env:
-          GITHUB_REF: refs/tags/${{ env.TAG_NAME }}
+    uses: Xerrion/wow-workflows/.github/workflows/release.yml@main
+    secrets: inherit
