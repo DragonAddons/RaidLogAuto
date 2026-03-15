@@ -49,7 +49,7 @@ jobs:
           echo "ref=$WORKFLOW_SOURCE_REF" >> "$GITHUB_OUTPUT"
 
       - name: Checkout workflow source
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ steps.workflow-source.outputs.ref }}
           fetch-depth: 1
@@ -62,7 +62,7 @@ jobs:
           cp .workflow-source/scripts/generate_changelog.sh "$RUNNER_TEMP/release-scripts/generate_changelog.sh"
 
       - name: Checkout tag
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: refs/tags/${{ env.TAG_NAME }}
           fetch-depth: 0

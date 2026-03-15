@@ -1,7 +1,7 @@
 ## Interface: 110207, 120001, 120000
 ## Interface-Mists: 50502, 50503
 ## Interface-BCC: 20505
-## Interface-vanilla: 11508, 11507
+## Interface-Vanilla: 11508, 11507
 
 ## Title: RaidLogAuto
 ## Notes: Automatically enables combat logging when entering a raid and disables it when leaving.
