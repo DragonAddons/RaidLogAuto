@@ -11,6 +11,13 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Fix release workflow (#15)
+## [1.4.2](https://github.com/Xerrion/RaidLogAuto/compare/1.4.1...1.4.2) (2026-03-15)
+
+
+### Bug Fixes
+
+* correct packager directive end-tags and vanilla filename in TOC ([#33](https://github.com/Xerrion/RaidLogAuto/issues/33)) ([#35](https://github.com/Xerrion/RaidLogAuto/issues/35)) ([fcafaae](https://github.com/Xerrion/RaidLogAuto/commit/fcafaae855eccd2f88b886c5b410c46af2e5b2fd))
+
 ## [1.4.1](https://github.com/Xerrion/RaidLogAuto/compare/1.4.0...1.4.1) (2026-03-15)
 
 
