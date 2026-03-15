@@ -9,8 +9,8 @@ This is a World of Warcraft addon that automatically enables combat logging when
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
 | `lint.yml` | `pull_request_target` to `master` | Runs Luacheck |
-| `release-pr.yml` | Push to `master` | Creates / updates a release PR via release-please |
-| `release.yml` | Tag push or `workflow_dispatch` | Builds and publishes via BigWigsMods packager |
+| `release.yml` | Push to `master` | release-please creates/updates a Release PR; dispatches `packager.yml` on release |
+| `packager.yml` | `workflow_dispatch` (from release.yml) | Builds and publishes via BigWigsMods packager |
 
 ### Branch Protection
 
@@ -48,8 +48,8 @@ RaidLogAuto/
 ├── .release-please-manifest.json # Release-please version manifest
 ├── .github/workflows/
 │   ├── lint.yml                # Luacheck CI on PRs and master
-│   ├── release-pr.yml          # Release PR via release-please
-│   └── release.yml             # Tag-based packaging and upload
+│   ├── packager.yml            # BigWigsMods packager (dispatched by release.yml)
+│   └── release.yml             # release-please + packager dispatch
 ```
 
 ### Version-Specific Files
