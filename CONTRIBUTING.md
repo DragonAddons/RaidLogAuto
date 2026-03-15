@@ -101,7 +101,7 @@ RaidLogAuto does not have automated tests. Manual testing checklist:
 
 2. **Commit** using [Conventional Commits](https://www.conventionalcommits.org/):
    ```bash
-   git commit --no-gpg-sign -m "feat: add mythic+ logging support (#42)"
+   git commit -m "feat: add mythic+ logging support (#42)"
    ```
 
 3. **Push** your branch and open a PR against `master`
