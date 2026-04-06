@@ -11,6 +11,13 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Fix release workflow (#15)
+## [1.4.3](https://github.com/Xerrion/RaidLogAuto/compare/1.4.2...1.4.3) (2026-04-06)
+
+
+### Bug Fixes
+
+* delay combat log stop after M+ completion to prevent abandoned logs ([#38](https://github.com/Xerrion/RaidLogAuto/issues/38)) ([#40](https://github.com/Xerrion/RaidLogAuto/issues/40)) ([f1d0f77](https://github.com/Xerrion/RaidLogAuto/commit/f1d0f77f6bc8f13bae675b92ef176339cc8428dd))
+
 ## [1.4.2](https://github.com/Xerrion/RaidLogAuto/compare/1.4.1...1.4.2) (2026-03-15)
 
 
