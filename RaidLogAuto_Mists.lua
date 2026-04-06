@@ -29,6 +29,8 @@ local StaticPopupDialogs = StaticPopupDialogs
 local StaticPopup_Show = StaticPopup_Show
 local print = print
 
+local pendingStopTimer = nil
+
 local L = {
     ENABLED = COMBATLOGENABLED or "Combat logging enabled.",
     DISABLED = COMBATLOGDISABLED or "Combat logging disabled.",
@@ -107,6 +109,12 @@ local function UpdateLogging()
     end
 end
 
+local function CancelPendingStopTimer()
+    if not pendingStopTimer then return end
+    pendingStopTimer:Cancel()
+    pendingStopTimer = nil
+end
+
  -------------------------------------------------------------------------------
 -- Event Handler
  -------------------------------------------------------------------------------
@@ -157,18 +165,27 @@ local function OnEvent(self, event, arg1)
         C_Timer.After(3, ShowCombatLogReminder)
 
     elseif event == "PLAYER_ENTERING_WORLD" then
+        CancelPendingStopTimer()
         C_Timer.After(1, UpdateLogging)
 
     elseif event == "ZONE_CHANGED_NEW_AREA" then
+        if pendingStopTimer then
+            return
+        end
         UpdateLogging()
 
     elseif event == "CHALLENGE_MODE_START" then
+        CancelPendingStopTimer()
         if RaidLogAutoDB.mythicPlus then
             UpdateLogging()
         end
 
     elseif event == "CHALLENGE_MODE_COMPLETED" then
-        UpdateLogging()
+        CancelPendingStopTimer()
+        pendingStopTimer = C_Timer.NewTimer(5, function()
+            pendingStopTimer = nil
+            UpdateLogging()
+        end)
     end
 end
 
@@ -204,7 +221,7 @@ local function PrintHelp()
     print("  /rla on - Enable addon")
     print("  /rla off - Disable addon")
     print("  /rla toggle - Toggle addon on/off")
-    print("  /rla mythic - Toggle Mythic+ logging (Retail only)")
+    print("  /rla mythic - Toggle Mythic+ logging (Retail/MoP only)")
     print("  /rla silent - Toggle chat messages")
     Print(COLOR_GREEN .. "/rla acl" .. COLOR_WHITE .. " - Check/enable Advanced Combat Logging")
     print("  /rla help - Show this help")
