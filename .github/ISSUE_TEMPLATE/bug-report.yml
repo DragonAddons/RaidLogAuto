@@ -3,6 +3,8 @@ description: Report a bug with RaidLogAuto
 title: "[Bug]: "
 labels:
   - bug
+assignees:
+  - Xerrion
 body:
   - type: textarea
     id: description
