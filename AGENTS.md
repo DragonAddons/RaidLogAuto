@@ -1,55 +1,24 @@
-# RaidLogAuto - Agent Guidelines
+# RaidLogAuto AGENTS.md
 
-## CI/CD
-
-| Workflow | Trigger | What it does |
-|----------|---------|--------------|
-| `lint.yml` | `pull_request_target` to `master` | Runs Luacheck |
-| `release.yml` | Push to `master` | release-please creates/updates a Release PR; dispatches `packager.yml` on release |
-| `packager.yml` | `workflow_dispatch` (from release.yml) | Builds and publishes via BigWigsMods packager |
-
----
+Deviates from workspace conventions: no Ace3, no shared `ns`, no AceDB.
 
 ## Version-Specific Files
 
-| File | Interface | Game Version | Features |
-|------|-----------|--------------|----------|
-| RaidLogAuto_Retail.lua | Interface | Retail | Raids + Mythic+ |
-| RaidLogAuto_Mists.lua | Interface-Mists | MoP Classic | Raids + Mythic+ |
-| RaidLogAuto_TBC.lua | Interface-BCC | TBC Anniversary | Raids |
-| RaidLogAuto_Cata.lua | Interface-Cata | Cataclysm Classic | Raids |
-| RaidLogAuto_Classic.lua | Interface-Classic | Classic Era | Raids |
+| File | TOC Directive | Game Version |
+|------|---------------|--------------|
+| `RaidLogAuto_Retail.lua` | `## Interface` | Retail (raids + Mythic+) |
+| `RaidLogAuto_Mists.lua` | `## Interface-Mists` | MoP Classic (raids + Mythic+) |
+| `RaidLogAuto_TBC.lua` | `## Interface-BCC` | TBC Anniversary (raids) |
+| `RaidLogAuto_Cata.lua` | `## Interface-Cata` | Cataclysm Classic (raids) |
+| `RaidLogAuto_Classic.lua` | `## Interface-Classic` | Classic Era (raids) |
 
----
+## Namespace Pattern
 
-## Key WoW API Functions Used
+Use `local ADDON_NAME, _ = ...` - the shared `ns` table is intentionally discarded. Each version-specific file is fully self-contained; do not factor logic into a shared module.
 
-| Function | Availability | Purpose |
-|----------|--------------|---------|
-| `IsInInstance()` | All versions | Check if player is in instance |
-| `IsInRaid()` | All versions | Check if player is in raid |
-| `LoggingCombat([bool])` | All versions | Get/set combat logging state |
-| `C_ChallengeMode.GetActiveChallengeMapID()` | All versions (content in Retail/MoP only) | Get active M+ map ID |
-| `C_Timer.After(seconds, func)` | All versions | Delayed function execution |
-| `CreateFrame("Frame")` | All versions | Create event frame |
+## SavedVariables Defaults Merge
 
----
-
-## RaidLogAuto-Specific Patterns
-
-### Namespace
-
-Unlike all other addons in this workspace, RaidLogAuto discards the shared namespace:
-
-```lua
-local ADDON_NAME, _ = ...
-```
-
-There is no `ns` table. Each version-specific file is fully self-contained.
-
-### SavedVariables Defaults Merge
-
-RaidLogAuto does not use AceDB. Defaults are merged manually in the `ADDON_LOADED` handler:
+No AceDB. Defaults are merged manually in the `ADDON_LOADED` handler:
 
 ```lua
 local defaults = {
@@ -66,12 +35,6 @@ for key, value in pairs(defaults) do
 end
 ```
 
----
-
 ## Known Gotchas
 
-- `RaidLogAuto.lua` is **deprecated** and excluded from packaging - do not edit it
-- Missing APIs for a target version - check `docs/` for the exact client build
-- Deprecated globals like `COMBATLOGENABLED` and `COMBATLOGDISABLED` (removed in Cata; always provide `or` fallbacks)
-- Race conditions on `PLAYER_ENTERING_WORLD` - use a short `C_Timer.After` delay
-- Timer leaks - cancel `C_Timer` or `AceTimer` handles before reusing
+- `RaidLogAuto.lua` is **deprecated** and excluded from packaging - do not edit it.
